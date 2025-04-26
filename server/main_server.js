@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors"
+import { CopyAll, SendAndArchive } from "@mui/icons-material";
 
 
 let Coupons = {
@@ -51,6 +52,22 @@ fastify.get('/api/hello', async (req, reply) => {
     
   });
   
+fastify.post("/api/UpdateDiscount", async (req, reply) => {
+    let {Coupon , onTop , seasonal } = req.body;
+    if (Coupon !== undefined ) {
+      for (let Keys_Ja of Object.keys(Coupon)){
+        if (Keys_Ja.length === 14){
+          Coupons[Keys_Ja] = Coupon[Keys_Ja];
+        }
+      }
+      console.log("Updated Coupons:", Coupons);
+    
+    }else if (onTop !== undefined){
+
+    }else if (seasonal !== undefined){
+
+    }
+  });
 /*
 {
   "Product": {
@@ -72,7 +89,7 @@ fastify.post("/api/Calculation", async (req, reply) => {
     let TotalPrices = 0.0;
     let RawtotalPrices = 0.0 ; 
     let { Product, Amount, Coupon , MemberPoint} = req.body;
-
+    
     for (let NameProduct of Object.keys(Amount)) {
       TotalPrices += Product[NameProduct] * Amount[NameProduct];
     }
