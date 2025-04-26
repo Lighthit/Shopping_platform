@@ -1,0 +1,86 @@
+/* Modal backdrop */
+.modal-backdrop {
+    z-index: -1;
+    position: fixed;
+    inset: 0;
+    background-color: rgb(0 0 0 / 0.5); /* พื้นหลังมืด */
+    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    justify-content: center; /* จัดให้ content อยู่กลางในแนวนอน */
+    align-items: center; /* จัดให้ content อยู่กลางในแนวตั้ง */
+  }
+  
+  /* Modal */
+  .modal {
+    position: fixed;
+    z-index: 1300;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+    text-align: center; /* จัดข้อความให้อยู่กลางในแนวนอน */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #dae2ed;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
+    padding: 24px;
+    color: #ff0000;
+    justify-content: center;
+  
+  }
+  
+  .modal-title {
+    margin: 0;
+    line-height: 1.5rem;
+    margin-bottom: 8px;
+  }
+  
+  .modal-description {
+    margin: 0;
+    line-height: 1.5rem;
+    font-weight: 400;
+    color: #434d5b;
+    margin-bottom: 4px;
+  }
+  
+  /* Trigger Button */
+  .trigger-button {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 150ms ease;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid #dae2ed;
+    color: #1c2025;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+  
+  .trigger-button:hover {
+    background: #f3f6f9;
+    border-color: #c7d0dd;
+  }
+  
+  .trigger-button:active {
+    background: #e5eaf2;
+  }
+  
+  .trigger-button:focus-visible {
+    box-shadow: 0 0 0 4px #99ccff;
+    outline: none;
+  }
