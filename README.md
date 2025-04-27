@@ -1,12 +1,17 @@
-# React + Vite
+# Take Home Assignment Playtorium
+![My Logo](./img/playtorium_solutions_cover.jpeg)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# About Candidate
+My name is Poomipat Makornwattana (Santy) <br>
+(+66) 949832910 M<br>
+Email : poomipatsubinmit@gmail.com
+# About Assignmnet
+- In these assignment i focuses on the Logic discounted item price. the discounts are follow by Coupon => onTop => seasonal discount respectively.
+- In in Task i seperate into WebPage for Shopping platform and API  server for calculation the discount
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# DEMO
+On the URL : http://188.166.222.52:55543/
+In Example is from WebUI in my Laptop but when opened on the mobile.The item card will change into row 3  x col 1
+![My Logo](./img/main_Pages.png)
+![My Logo](./img/PurchasePage.png)
+![My Logo](./img/confirmPurcheasePages.png)
