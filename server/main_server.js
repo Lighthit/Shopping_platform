@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors"
 import dotenv from "dotenv"
+import { SettingsAccessibility } from "@mui/icons-material";
 
 dotenv.config();
 let Coupons = {
@@ -46,9 +47,13 @@ await fastify.register(cors, {
 
 
 // Sample GET
-fastify.get('/api/hello', async (req, reply) => {
+fastify.get('/api/', async (req, reply) => {
     
-    return { message: 'GET received!' };
+    return {
+      "coupon": Coupons,
+      "onTop":onTop,
+      "seasonal": seasonal
+    }
     
   });
   
