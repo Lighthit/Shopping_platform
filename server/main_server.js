@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors"
 import { CopyAll, SendAndArchive } from "@mui/icons-material";
+import { defaultAllowedOrigins } from "vite";
 
 
 let Coupons = {
@@ -53,20 +54,92 @@ fastify.get('/api/hello', async (req, reply) => {
   });
   
 fastify.post("/api/UpdateDiscount", async (req, reply) => {
-    let {Coupon , onTop , seasonal } = req.body;
+    let couponstatus = [], onTopstatus = [] , seasonaltatus = [] ; 
+    let {Coupon , onTops , Seasonal } = req.body;
+    // MARK: Manage Coupon Code
     if (Coupon !== undefined ) {
       for (let Keys_Ja of Object.keys(Coupon)){
-        if (Keys_Ja.length === 14){
-          Coupons[Keys_Ja] = Coupon[Keys_Ja];
+        if (Keys_Ja.length === 14 ){
+          if (Keys_Ja.startsWith("THB") || Keys_Ja.startsWith("PER")){
+            Coupons[Keys_Ja] = Coupon[Keys_Ja];
+            couponstatus.push("coupon updated !")
+          }else{
+            couponstatus.push("Invalid coupon code !")
+          }
+        }else{
+          couponstatus.push("Invalid coupon code !")
         }
       }
       console.log("Updated Coupons:", Coupons);
-    
-    }else if (onTop !== undefined){
-
-    }else if (seasonal !== undefined){
-
+      
     }
+    // MARK: Manage onTop Discount
+    if (onTops !== undefined){
+      
+      for (let KeysCategory of Object.keys(onTops.Category)){
+        console.log(onTops.Category[KeysCategory]);
+        
+        switch (KeysCategory){
+          case "Clothing" :
+            
+            if(typeof onTops.Category[KeysCategory] === "number" &&  onTops.Category[KeysCategory] <= 100){
+              onTop.Category.Clothing = onTops.Category[KeysCategory]
+              onTopstatus.push("Clothing discount updated !")
+            }else{
+              onTopstatus.push("inValid Clothing Discount")
+            }break;
+          case "Electronic":
+            if(typeof onTops.Category[KeysCategory] === "number" &&  onTops.Category[KeysCategory] <= 100){
+              onTop.Category.Electronic = onTops.Category[KeysCategory]
+              onTopstatus.push("Electronic discount updated !")
+            }else{
+              onTopstatus.push("inValid Electronic Discount")
+            }break;
+          case "Accessory":
+            if(typeof onTops.Category[KeysCategory] === "number" &&  onTops.Category[KeysCategory] <= 100){
+              onTop.Category.Accessory = onTops.Category[KeysCategory]
+              onTopstatus.push("Accessory discount updated !")
+            }else{
+              onTopstatus.push("inValid Accessory Discount")
+            }break;
+          default:
+            onTopstatus.push("Not have these category! 👀");
+            break;
+        }
+        
+      }
+      
+      console.log(onTopstatus);
+    
+    }
+    // MARK: Manage Seasonal Discount
+    if (Seasonal !== undefined){
+      for (let KeysSeasonals of Object.keys(Seasonal)){
+        switch (KeysSeasonals){
+          case "Discount":
+            if (typeof Seasonal[KeysSeasonals] === "number" &&  Seasonal[KeysSeasonals] >= 0 ){
+              seasonal.Discount = Seasonal[KeysSeasonals] ;
+              seasonaltatus.push("Discount Per X THB is Updated!")
+            }else{
+              seasonaltatus.push("invalid Format process Discount will not update!")
+            }break;
+          
+          case "In_Every":
+            if (typeof Seasonal[KeysSeasonals] === "number" &&  Seasonal[KeysSeasonals] >= 0 ){
+              seasonal.In_Every = Seasonal[KeysSeasonals] ;
+              seasonaltatus.push("In Every X Bath per discount time is updated !")
+            }else{
+              seasonaltatus.push("invalid Format process In_Every will not update!")
+            }break;
+            
+        }
+      }
+    }
+    reply.send({
+      "coupon":couponstatus,
+      "ontop":onTopstatus,
+      "sesonal":seasonaltatus
+    })
   });
 /*
 {
@@ -86,15 +159,19 @@ fastify.post("/api/UpdateDiscount", async (req, reply) => {
 }
 */
 fastify.post("/api/Calculation", async (req, reply) => {
+    let step1;
     let TotalPrices = 0.0;
     let RawtotalPrices = 0.0 ; 
     let { Product, Amount, Coupon , MemberPoint} = req.body;
     
     for (let NameProduct of Object.keys(Amount)) {
+      if (!(NameProduct in Product)) {
+        return reply.status(400).send({ error: `Product "${NameProduct}" not found in Product list` });
+      }
       TotalPrices += Product[NameProduct] * Amount[NameProduct];
     }
     RawtotalPrices = TotalPrices ; 
-    //MARK: First
+    // MARK: First
     //First Piority is Coupon
 
     if (Object.keys(Coupons).includes(Coupon?.couponCode)) {
@@ -104,13 +181,18 @@ fastify.post("/api/Calculation", async (req, reply) => {
             if (TotalPrices <=0){
               TotalPrices = 0.0 ;
             }
-           
+          step1 = `Use Coupon discount ${discount} THB`
+
         }else if(Coupon.couponCode.startsWith("PER")) {    // Percentage Discount
             let discount = Coupons[Coupon.couponCode];
+            if (discount > 100){discount = 100 ;}
             TotalPrices = TotalPrices - (TotalPrices * (discount/100)) ; 
+            step1 = `Use Coupon discount ${discount} %`
+        }else{
+          step1 = "coupon wrong will not used"
         }
     }
-    //MARK: Second
+    // MARK: Second
     //Second Piority is On Top [Category , Membership Point ]
     //-------Discount Category
     console.log(TotalPrices);
@@ -144,7 +226,7 @@ fastify.post("/api/Calculation", async (req, reply) => {
       TotalPrices = 0.0;
     }
     //console.log(TotalPrices);
-    //MARK: Final Calcualtion
+    // MARK: Final Calcualtion
     // Finally Piority is Seasonal
     let AmountTimeSeasonalDiscount = Math.floor(TotalPrices / seasonal.In_Every) || 0 //มีจุดทศนิยมปัดลง float to int
     TotalPrices -= seasonal.Discount * AmountTimeSeasonalDiscount ; 
@@ -153,7 +235,8 @@ fastify.post("/api/Calculation", async (req, reply) => {
     }
     reply.send({ 
       "Raw_Prices":RawtotalPrices,
-      "total": TotalPrices 
+      "total": TotalPrices ,
+      "Coupon":step1
     });
 })
   // Start server
