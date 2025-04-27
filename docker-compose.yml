@@ -9,7 +9,7 @@ services:
     container_name: shopping_platform  # ตั้งชื่อคอนเทนเนอร์เป็น main_server
     ports:
       - "55543:55543" 
-      
+
     volumes:
       - ../:/app  # แชร์โฟลเดอร์โปรเจคจากโฮสต์ไปยังคอนเทนเนอร์ที่ /app
       - /app/node_modules  # เพื่อไม่ให้ /app/node_modules ถูกทับด้วยข้อมูลจากโฟลเดอร์โปรเจค
