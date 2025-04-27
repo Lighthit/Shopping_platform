@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Modal as BaseModal } from '@mui/material'; // Ensure you're using the correct import from MUI v5
 import './Purchase.css'; // ดึง CSS เข้ามา
+import { useNavigate } from 'react-router-dom';
 
 let DataSender = {
   "Product": {},
@@ -14,6 +15,7 @@ export function callBackJson(PriceData, AmountData) {
 }
 
 export default function Purchase() {
+  let navigate = useNavigate();
   const [Coupons, setCoupons] = useState('');
   const [MemberPoints, setMemberPoint] = useState('');
   const [open, setOpen] = useState(false);
@@ -68,8 +70,13 @@ export default function Purchase() {
     PostData()
     setOpen(true)
   };
-  const handleCloseModal = () => setOpen(false);
-
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+  const confirm_button= () => {
+    setOpen(false);
+    navigate("/");
+  };
   return (
     <>
       <header>
@@ -114,12 +121,12 @@ export default function Purchase() {
       {/* Modal ตอนยืนยัน */}
       <BaseModal
         open={open}
-        onClose={handleCloseModal}
+        onClose={()=>{handleCloseModal}}
         
       >
         <div className="modal-content">
           <h2 className="modal-title">Confirm Purchase</h2>
-          <p className="modal-description">Are you sure you want to verify and send the data?</p>
+          <p className="modal-description">Make sure your items are correct {"(no Refund !🔥)"}</p>
           {Object.entries(DataSender.Amount).map(([key, value], index) => (
           <p key={index} className="modal-description">
             {key}: {value}
@@ -129,7 +136,7 @@ export default function Purchase() {
           <p className="modal-description">Original Price: {raw_totalPrices}฿ Discount : {raw_totalPrices - totalPrices}฿<br/> Discounted Price:{totalPrices} ฿</p>
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '16px' }}>
             <button onClick={handleCloseModal} className="trigger-button">Cancel</button>
-            <button onClick={handleCloseModal} className="trigger-button">Confirm</button>
+            <button onClick={confirm_button} className="trigger-button">Confirm</button>
           </div>
         </div>
       </BaseModal>
