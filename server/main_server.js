@@ -239,7 +239,7 @@ fastify.post("/api/Calculation", async (req, reply) => {
     });
 })
   // Start server
-fastify.listen({ port: `${process.env.PORT_SERVER || 11111}` }, (err, address) => {
+fastify.listen({ port: `${process.env.PORT_SERVER || 33333}` }, (err, address) => {
     if (err) {
       fastify.log.error(err);
       process.exit(1);

@@ -2,12 +2,24 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    image: shopping_platform  # ใช้ image ที่มีชื่อว่า senior_project
+    build:
+      context: .  # ใช้ context เป็น parent directory ของโปรเจค
+      dockerfile: Dockerfile  # ตั้งค่าตำแหน่ง Dockerfile ที่ใช้ในการ build
+    container_name: shopping_platform  # ตั้งชื่อคอนเทนเนอร์เป็น main_server
     ports:
-      - "55544:55544"  # Port สำหรับ front-end
-      - "55543:55543"  # Port สำหรับ back-end
+      - "55543:55543"  # Map พอร์ต 12345 ของคอนเทนเนอร์ไปยังพอร์ต 12345 ของโฮสต์ (HTTPS)
+      - "33333:33333"  # Map พอร์ต 54321 ของคอนเทนเนอร์ไปยังพอร์ต 54321 ของโฮสต์ (HTTP)
     volumes:
-      - .:/app  # แชร์ไฟล์ในโฟลเดอร์โปรเจคไปยังคอนเทนเนอร์
+      - ../:/app  # แชร์โฟลเดอร์โปรเจคจากโฮสต์ไปยังคอนเทนเนอร์ที่ /app
+      - /app/node_modules  # เพื่อไม่ให้ /app/node_modules ถูกทับด้วยข้อมูลจากโฟลเดอร์โปรเจค
     environment:
-      - NODE_ENV=development
-    command: ["npm", "run", "server"]  # รันทั้ง front-end และ back-end ด้วยคำสั่งนี้
+      - NODE_ENV=production  # ตั้งค่า environment variable สำหรับโหมด production
+    env_file:
+      - .env  # โหลด environment variables จากไฟล์ .env ที่อยู่ใน root directory ของโปรเจค
+    networks:
+      - shopping_platform_net  # เชื่อมต่อคอนเทนเนอร์กับ network ชื่อ shopping_platform_net
+
+networks:
+  shopping_platform_net:
+    driver: bridge  # ใช้ network driver แบบ bridge
