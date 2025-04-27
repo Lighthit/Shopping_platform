@@ -1,9 +1,8 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors"
-import { CopyAll, SendAndArchive } from "@mui/icons-material";
-import { defaultAllowedOrigins } from "vite";
+import dotenv from "dotenv"
 
-
+dotenv.config();
 let Coupons = {
     "THBPurchase999":50,
     "PERPurchase888":90
@@ -240,7 +239,7 @@ fastify.post("/api/Calculation", async (req, reply) => {
     });
 })
   // Start server
-fastify.listen({ port: 55543 }, (err, address) => {
+fastify.listen({ port: `${process.env.PORT_SERVER || 11111}` }, (err, address) => {
     if (err) {
       fastify.log.error(err);
       process.exit(1);

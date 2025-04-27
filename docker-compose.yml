@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "55544:55544"  # Port สำหรับ front-end
+      - "55543:55543"  # Port สำหรับ back-end
+    volumes:
+      - .:/app  # แชร์ไฟล์ในโฟลเดอร์โปรเจคไปยังคอนเทนเนอร์
+    environment:
+      - NODE_ENV=development
+    command: ["npm", "run", "server"]  # รันทั้ง front-end และ back-end ด้วยคำสั่งนี้
