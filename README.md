@@ -15,3 +15,12 @@ In Example is from WebUI in my Laptop but when opened on the mobile.The item car
 ![My Logo](./img/main_Pages.png)
 ![My Logo](./img/PurchasePage.png)
 ![My Logo](./img/confirmPurcheasePages.png)
+
+# Discount Management
+I decided to use Postman to POST JSON data to update the discount in the system. The “ontop”, “coupon”, and “seasonal” fields do not need to be filled at the same time, but they can be sent separately to the server while keeping the same JSON format. For the “coupon” field, the key should remain “coupon”, but its value should be an object like <br>
+{
+    "coupon":{
+        "coupon code":value
+    }
+}
+![My Logo](./img/UpdateValueFormat.png)
