@@ -8,8 +8,8 @@ services:
       dockerfile: Dockerfile  # ตั้งค่าตำแหน่ง Dockerfile ที่ใช้ในการ build
     container_name: shopping_platform  # ตั้งชื่อคอนเทนเนอร์เป็น main_server
     ports:
-      - "55543:55543"  # Map พอร์ต 12345 ของคอนเทนเนอร์ไปยังพอร์ต 12345 ของโฮสต์ (HTTPS)
-      - "33333:33333"  # Map พอร์ต 54321 ของคอนเทนเนอร์ไปยังพอร์ต 54321 ของโฮสต์ (HTTP)
+      - "55543:55543" 
+      
     volumes:
       - ../:/app  # แชร์โฟลเดอร์โปรเจคจากโฮสต์ไปยังคอนเทนเนอร์ที่ /app
       - /app/node_modules  # เพื่อไม่ให้ /app/node_modules ถูกทับด้วยข้อมูลจากโฟลเดอร์โปรเจค

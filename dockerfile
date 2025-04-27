@@ -13,7 +13,7 @@ RUN npm install
 # เปิดพอร์ตที่ใช้ใน React (Vite) และ Server
 EXPOSE 55543
 
-EXPOSE 33333
+
 
 # คำสั่งในการรัน React และ Server พร้อมกัน
 CMD ["npm", "run", "dev-all"]
