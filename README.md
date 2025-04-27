@@ -3,7 +3,7 @@
 
 # About Candidate
 My name is Poomipat Makornwattana (Santy) <br>
-(+66) 949832910 M<br>
+(+66) 949832910 <br>
 Email : poomipatsubinmit@gmail.com
 # About Assignmnet
 - In these assignment i focuses on the Logic discounted item price. the discounts are follow by Coupon => onTop => seasonal discount respectively.
