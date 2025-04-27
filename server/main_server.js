@@ -197,38 +197,49 @@ fastify.post("/api/Calculation", async (req, reply) => {
         }
     }
     // MARK: Second
-    //Second Piority is On Top [Category , Membership Point ]
-    //-------Discount Category
-    console.log(TotalPrices);
-    for (let NameProduct of Object.keys(Amount)) {
-      let foundCategory = null ;
-      for (let category in NameTag_Category) {
-        if (NameProduct in NameTag_Category[category]) {
-            foundCategory = category;
-            break; // เจอแล้วไม่ต้องเช็กต่อ
-        }
+    // Second Priority is On Top [either Category Discount or Member Point]
+    console.log(typeof MemberPoint?.point);
+    console.log(MemberPoint?.point);
+    if (typeof MemberPoint?.point === "number" && MemberPoint.point > 0) {
+      console.log("use Point Discount not Category Discount");
+      // มี Member Point และมีแต้มมากกว่า 0
+      let memberPointValue = MemberPoint.point;
+      let DiscountMemberPoint_limit = 0.20 * TotalPrices; // Limit: 20% of current total
+
+      if (memberPointValue > DiscountMemberPoint_limit) {
+          TotalPrices -= DiscountMemberPoint_limit;
+      } else {
+          TotalPrices -= memberPointValue;
       }
-      
-      let discountCategory = onTop.Category[foundCategory] || 0; 
-      let discountAmount = (Product[NameProduct] * Amount[NameProduct]) * (discountCategory / 100);
-      
-      TotalPrices -= discountAmount;
-      if (TotalPrices < 0 ){
-        TotalPrices = 0;
+
+      if (TotalPrices < 0) {
+          TotalPrices = 0;
       }
-      //console.log(foundCategory);
-      //console.log(TotalPrices);
+    } else {
+      console.log("use Category Discount not Point Discount");
+      // ไม่มี Member Point ➔ ใช้ Category Discount แทน
+      for (let NameProduct of Object.keys(Amount)) {
+          let foundCategory = null;
+          for (let category in NameTag_Category) {
+              if (NameProduct in NameTag_Category[category]) {
+                  foundCategory = category;
+                  break;
+              }
+          }
+          
+          if (foundCategory) {
+              let discountCategory = onTop.Category[foundCategory] || 0;
+              let discountAmount = (Product[NameProduct] * Amount[NameProduct]) * (discountCategory / 100);
+
+              TotalPrices -= discountAmount;
+              if (TotalPrices < 0) {
+                  TotalPrices = 0;
+              }
+          }
+      }
     }
-    //-------Discount Member Point
-    let memberPointValue = MemberPoint?.point || 0;
-    let DiscountMemberPoint_limit = 0.20 * TotalPrices ; // Limit discount by using these filter 
-    if (memberPointValue  > DiscountMemberPoint_limit){
-      TotalPrices -= DiscountMemberPoint_limit ; 
-    }else if(memberPointValue  < DiscountMemberPoint_limit){
-      TotalPrices -= memberPointValue  ; 
-    }else if(TotalPrices < 0 ){
-      TotalPrices = 0.0;
-    }
+    
+    
     //console.log(TotalPrices);
     // MARK: Final Calcualtion
     // Finally Piority is Seasonal

@@ -22,7 +22,7 @@ export default function Purchase() {
   const [totalPrices,settotalPrices] = useState(0);
   const [raw_totalPrices,setraw_tatalPrices] = useState(0);
 
-  const static_Point_Member = 99999;
+  const static_Point_Member = 8888;
 
   const PostData = () => {
     console.log(DataSender);
@@ -33,7 +33,7 @@ export default function Purchase() {
       DataSender.Coupon = { "couponCode": "" };
     }
 
-    DataSender.MemberPoint = { "point": MemberPoints };
+    DataSender.MemberPoint = { "point": Number(MemberPoints) };
 
     axios.post('/api/Calculation', DataSender)
       .then(response => {
