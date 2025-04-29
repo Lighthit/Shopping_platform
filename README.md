@@ -13,7 +13,9 @@ Email : poomipatsubinmit@gmail.com
 On the URL : http://188.166.222.52:55543/ that i launch in the Docker on Cloud (Digital Ocean )
 In Example is from WebUI in my Laptop but when opened on the mobile.The item card will change into row 3  x col 1
 ![My Logo](./img/main_Pages.png)
+If you do not enter a value in the membership point discount field, the system will automatically use the category percentage discount. However, if you enter a membership point discount, it will take first priority over the category discount.
 ![My Logo](./img/PurchasePage.png)
+The confirmation popup displays the items selected for purchase, including their quantities. It also shows the original price, the discount points calculated by the server, and the final price after applying the discount.
 ![My Logo](./img/confirmPurcheasePages.png)
 
 # Discount Management
